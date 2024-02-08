@@ -1,0 +1,16 @@
+name: Docker image for the arithmetic server
+
+on: push
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checout@v3
+        - name: Build and push the Docker image
+          run: |
+            docker login --username pushkar14-mst --password ${{ secrets.ACCESS_TOKEN }} ghcr.io
+            docker build -t ghcr.io/pushkar14-mst/arithmetic-service:latest --file Dockerfile .
+            docker push ghcr.io/pushkar14-mst/arithmetic-service:latest
