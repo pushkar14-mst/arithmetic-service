@@ -13,3 +13,5 @@ jobs:
           docker login --username pushkar14-mst --password ${{secrets.GITHUB_TOKEN}} ghcr.io
           docker build -t ghcr.io/pushkar14-mst/arithmetic-service:latest --file Dockerfile .  
           docker push ghcr.io/pushkar14-mst/arithmetic-service:latest
+          docker pull ghcr.io/pushkar14-mst/arithmetic-service:latest
+          docker run -p 8080:8080 ghcr.io/pushkar14-mst/arithmetic-service:latest
