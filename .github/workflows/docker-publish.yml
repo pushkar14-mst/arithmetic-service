@@ -60,7 +60,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.ARITHMETIC_SERVICE_GIT_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -97,3 +97,9 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Publish the image to azure container registry
+        run: |
+          docker login -username practical15 --password ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }} practical15.azurecr.io
+          docker tag arithmetic-service practical15.azurecr.io/arithmetic-service
+          docker push practical15.azurecr.io/arithmetic-service
