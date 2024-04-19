@@ -10,6 +10,7 @@ jobs:
       CONTAINER_REGISTRY: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
       CONTAINER_REGISTRY_UN: ${{ secrets.AZURE_CONTAINER_REGISTRY_UN }}
       CONTAINER_REGISTRY_PW: ${{ secrets.AZURE_CONTAINER_REGISTRY_PW }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +30,7 @@ jobs:
           docker push $CONTAINER_REGISTRY/arithmetic-service:$VERSION
       - uses: tale/kubectl-action@v1.0.0
         with:
-          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+          base64-kube-config: echo "$KUBE_CONFIG" | $KUBE_CONFIG
           kubectl-version: v1.29.2
       - name: Deploy to kubernetes
         run: ./deploy.sh
